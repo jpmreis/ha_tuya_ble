@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.1.9] - 2025-11-15
+
+### Fixed
+
+- Fixed compatibility with Python 3.13 by updating pycountry requirement from 22.3.5 to >=24.6.1
+- Fixed compatibility with newer Home Assistant versions by adding missing constants locally (CONF_ACCESS_ID, CONF_ACCESS_SECRET, CONF_AUTH_TYPE, CONF_COUNTRY_CODE, CONF_PASSWORD, SMARTLIFE_APP, TUYA_SMART_APP, TUYA_COUNTRIES)
+- Updated imports in cloud.py and config_flow.py to use local constants instead of deprecated Tuya integration constants
+
+### Changed
+
+- Updated manifest.json to reflect new maintainer and documentation URL
+
 ## [0.1.0] - 2023-04-22
 
 - Initial release
