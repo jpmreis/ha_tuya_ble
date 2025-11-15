@@ -12,6 +12,7 @@ from homeassistant.components.button import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
@@ -158,6 +159,35 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
         return result
 
 
+class TuyaBLEWakeUpButton(TuyaBLEEntity, ButtonEntity):
+    """Button to wake up sleeping BLE device."""
+
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        coordinator: DataUpdateCoordinator,
+        device: TuyaBLEDevice,
+        product: TuyaBLEProductInfo,
+    ) -> None:
+        super().__init__(
+            hass,
+            coordinator,
+            device,
+            product,
+            ButtonEntityDescription(
+                key="wake_up",
+                name="Wake Up",
+                icon="mdi:bell-ring",
+                entity_category=EntityCategory.CONFIG,
+            ),
+        )
+
+    async def async_press(self) -> None:
+        """Wake up the device by triggering an update."""
+        _LOGGER.debug("%s: Wake up button pressed", self._device.address)
+        await self._device.update()
+
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
@@ -180,4 +210,16 @@ async def async_setup_entry(
                     mapping,
                 )
             )
+
+    # Add wake-up button for Smart Locks
+    if data.device.category == "ms":
+        entities.append(
+            TuyaBLEWakeUpButton(
+                hass,
+                data.coordinator,
+                data.device,
+                data.product,
+            )
+        )
+
     async_add_entities(entities)
