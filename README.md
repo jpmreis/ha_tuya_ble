@@ -1,5 +1,11 @@
 # Home Assistant support for Tuya BLE devices
 
+> **Note**: This is a fork of [PlusPlus-ua/ha_tuya_ble](https://github.com/PlusPlus-ua/ha_tuya_ble) with compatibility fixes for Python 3.13 and newer Home Assistant versions.
+>
+> **What's fixed in this fork:**
+> - ✅ Python 3.13 support (updated pycountry dependency)
+> - ✅ Compatibility with Home Assistant 2024+ (migrated deprecated Tuya integration constants)
+
 ## Overview
 
 This integration supports Tuya devices connected via BLE.
@@ -10,7 +16,7 @@ _Inspired by code of [@redphx](https://github.com/redphx/poc-tuya-ble-fingerbot)
 
 Place the `custom_components` folder in your configuration directory (or add its contents to an existing `custom_components` folder). Alternatively install via [HACS](https://hacs.xyz/).
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=PlusPlus-ua&repository=ha_tuya_ble&category=integration)
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=jpmreis&repository=ha_tuya_ble&category=integration)
 
 ## Usage
 
