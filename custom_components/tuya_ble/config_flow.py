@@ -111,13 +111,9 @@ def _show_login_form(
                 user_input[CONF_COUNTRY_CODE] = country.name
                 break
 
+    # Default country name removed to avoid blocking I/O in event loop
+    # User will select from dropdown instead
     def_country_name: str | None = None
-    try:
-        def_country = pycountry.countries.get(alpha_2=flow.hass.config.country)
-        if def_country:
-            def_country_name = def_country.name
-    except:
-        pass
 
     return flow.async_show_form(
         step_id="login",
