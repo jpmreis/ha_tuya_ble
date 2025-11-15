@@ -91,10 +91,21 @@ def set_fingerbot_program_repeat_forever(
         datapoint = self._device.datapoints[product.fingerbot.program]
         if datapoint and type(datapoint.value) is bytes:
             new_value = (
-                int.to_bytes(0xFFFF if value else 1, 2, "big") + 
+                int.to_bytes(0xFFFF if value else 1, 2, "big") +
                 datapoint.value[2:]
             )
             self._hass.create_task(datapoint.set_value(new_value))
+
+
+def is_lock_unlocked(
+    self: TuyaBLESwitch, product: TuyaBLEProductInfo
+) -> bool:
+    """Check if lock is unlocked (DP 47 = False) to allow manual locking."""
+    result: bool = True
+    datapoint = self._device.datapoints.get(47)  # lock_motor_state
+    if datapoint is not None:
+        result = datapoint.value == False  # Only available when unlocked
+    return result
 
 
 @dataclass
@@ -166,19 +177,22 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                 ["ludzroix", "isk2p555", "7a4xvbtt"], # Smart Lock
                 [
                     TuyaBLESwitchMapping(
-                        dp_id=46,
+                        dp_id=33,
                         description=SwitchEntityDescription(
-                            key="manual_lock",
+                            key="lock",
                             icon="mdi:lock",
+                            name="Lock",
                         ),
                     ),
                     TuyaBLESwitchMapping(
-                        dp_id=33,
+                        dp_id=46,
                         description=SwitchEntityDescription(
-                            key="automatic_lock",
-                            icon="mdi:lock-clock",
+                            key="manual_lock",
+                            icon="mdi:lock-plus",
+                            name="Manual Lock",
                             entity_category=EntityCategory.CONFIG,
                         ),
+                        is_available=is_lock_unlocked,
                     ),
                 ]
             ),
