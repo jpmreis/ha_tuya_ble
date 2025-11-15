@@ -166,9 +166,18 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                 ["ludzroix", "isk2p555", "7a4xvbtt"], # Smart Lock
                 [
                     TuyaBLESwitchMapping(
-                        dp_id=47,
+                        dp_id=46,
                         description=SwitchEntityDescription(
-                            key="lock_motor_state",
+                            key="manual_lock",
+                            icon="mdi:lock",
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=33,
+                        description=SwitchEntityDescription(
+                            key="automatic_lock",
+                            icon="mdi:lock-clock",
+                            entity_category=EntityCategory.CONFIG,
                         ),
                     ),
                 ]

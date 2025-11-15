@@ -428,6 +428,27 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
             ],
         },
     ),
+    "ms": TuyaBLECategoryNumberMapping(
+        products={
+            **dict.fromkeys(
+                ["ludzroix", "isk2p555", "7a4xvbtt"], # Smart Lock
+                [
+                    TuyaBLENumberMapping(
+                        dp_id=36,
+                        description=NumberEntityDescription(
+                            key="auto_lock_time",
+                            icon="mdi:timer-lock",
+                            native_max_value=60,
+                            native_min_value=1,
+                            native_unit_of_measurement=UnitOfTime.SECONDS,
+                            native_step=1,
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
+        }
+    ),
 }
 
 
