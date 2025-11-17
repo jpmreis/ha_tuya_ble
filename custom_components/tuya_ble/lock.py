@@ -45,7 +45,7 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
     def is_locked(self) -> bool | None:
         """Return true if lock is locked."""
         # Read status from DP 47 (lock_motor_state)
-        datapoint = self._device.datapoints.get(self._status_dp_id)
+        datapoint = self._device.datapoints[self._status_dp_id]
         if datapoint is not None:
             return bool(datapoint.value)
         return None
