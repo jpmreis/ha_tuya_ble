@@ -45,34 +45,40 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
     def is_locked(self) -> bool | None:
         """Return true if lock is locked."""
         # Read status from DP 47 (lock_motor_state)
+        # DP 47: False = motor off = LOCKED, True = motor on = UNLOCKED
         datapoint = self._device.datapoints[self._status_dp_id]
         if datapoint is not None:
-            return bool(datapoint.value)
+            # Invert: False means locked, True means unlocked
+            return not bool(datapoint.value)
         return None
 
     async def async_lock(self, **kwargs: Any) -> None:
         """Lock the lock."""
         _LOGGER.debug("%s: Locking", self._device.address)
-        # Use DP 33 to toggle - if currently unlocked (False), set to True to lock
+        # Toggle DP 33 to change lock state
         datapoint = self._device.datapoints.get_or_create(
             self._control_dp_id,
             TuyaBLEDataPointType.DT_BOOL,
             False,
         )
-        if datapoint and not self.is_locked:
-            await datapoint.set_value(True)
+        if datapoint:
+            # Toggle the value to trigger lock action
+            current_value = bool(datapoint.value)
+            await datapoint.set_value(not current_value)
 
     async def async_unlock(self, **kwargs: Any) -> None:
         """Unlock the lock."""
         _LOGGER.debug("%s: Unlocking", self._device.address)
-        # Use DP 33 to toggle - if currently locked (True), set to False to unlock
+        # Toggle DP 33 to change lock state
         datapoint = self._device.datapoints.get_or_create(
             self._control_dp_id,
             TuyaBLEDataPointType.DT_BOOL,
             False,
         )
-        if datapoint and self.is_locked:
-            await datapoint.set_value(False)
+        if datapoint:
+            # Toggle the value to trigger unlock action
+            current_value = bool(datapoint.value)
+            await datapoint.set_value(not current_value)
 
 
 async def async_setup_entry(
