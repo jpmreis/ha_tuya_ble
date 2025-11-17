@@ -437,6 +437,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                         dp_id=36,
                         description=NumberEntityDescription(
                             key="auto_lock_time",
+                            name="Auto lock (when physically unlocked with Pin)",
                             icon="mdi:timer-lock",
                             native_max_value=60,
                             native_min_value=1,
